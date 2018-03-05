@@ -43,7 +43,16 @@ app.get('/', function(req, res){
 // require('./app/routes/file.routes.js')(app);
 require('./app/routes/generator.routes.js')(app);
 
+
+const PORT = process.env.PORT || 8080
+
 // listen for requests
-app.listen(8080, function(){
-    console.log("Server is listening on port 8080");
+app.listen(PORT, function(){
+    console.log("Server is listening on port "+PORT);
 });
+
+function up(){
+  return 'abc'
+}
+
+module.exports.up = up

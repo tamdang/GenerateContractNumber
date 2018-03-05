@@ -1,3 +1,4 @@
+const DATABASE_URL = process.env.DATABASE_URL || 'mongodb://localhost:32769/contractms'
 module.exports = {
-  url: 'mongodb://localhost:32768/contractms'
+  url: DATABASE_URL
 }

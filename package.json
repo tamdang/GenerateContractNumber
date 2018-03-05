@@ -4,7 +4,8 @@
   "description": "Generate contract number",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha *.spec.js",
+    "test-unit": "NODE_ENV=test mocha '*.spec.js'"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -24,5 +25,10 @@
   "bugs": {
     "url": "https://github.com/tamdang/GenerateContractNumber/issues"
   },
-  "homepage": "https://github.com/tamdang/GenerateContractNumber#readme"
+  "homepage": "https://github.com/tamdang/GenerateContractNumber#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.0.1",
+    "sinon": "^4.4.2"
+  }
 }
