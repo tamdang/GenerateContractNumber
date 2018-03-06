@@ -1,4 +1,4 @@
 module.exports = function(app) {
-  var contractor = require('../controllers/generator.controller.js');
-  app.get('/contractor', contractor.generateContractNumber);
+  var contractor = require('../controllers/contract.controller.js');
+  app.get('/api/contract', contractor.generateContractNumber);
 }
