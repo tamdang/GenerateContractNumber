@@ -4,8 +4,8 @@
   "description": "Generate contract number",
   "main": "server.js",
   "scripts": {
-    "test": "mocha *.spec.js",
-    "test-unit": "NODE_ENV=test mocha '*.spec.js'"
+    "test": "mocha **.spec.js",
+    "test-unit": "NODE_ENV=test mocha '**.spec.js'"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
