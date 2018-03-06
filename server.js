@@ -4,10 +4,10 @@ var bodyParser = require('body-parser');
 // create express app
 var app = express();
 
-// app.use(function (req, res, next) {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   next()
-// })
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  next()
+})
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -16,20 +16,19 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Configuring the database
-var dbConfig = require('./config/database.config.js');
-var mongoose = require('mongoose');
+var dbconfig = require('./config/database.config.js');
 
-mongoose.connect(dbConfig.url, {
-    
-});
+console.log('database_config',dbconfig.url);
 
-mongoose.connection.on('error', function() {
-    console.log('Could not connect to the database. Exiting now...');
-    process.exit();
+const { Pool, Client } = require('pg')
+
+const pool = new Pool({
+  connectionString: dbconfig.url,
 })
 
-mongoose.connection.once('open', function() {
-    console.log("Successfully connected to the database");
+pool.query('SELECT id, client, account_manager from contract', (err, res) => {
+  console.log(err, res)
+  pool.end()
 })
 
 // define a simple route
