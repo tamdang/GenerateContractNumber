@@ -26,14 +26,13 @@ const pool = new Pool({
   connectionString: dbconfig.url,
 })
 
-pool.query('SELECT id, client, account_manager from contract', (err, res) => {
-  console.log(err, res)
-  pool.end()
-})
-
 // define a simple route
 app.get('/', function(req, res){
-    res.json({"message": "Welcome to Contract Management application."});
+    pool.query('SELECT id, client, account_manager from contract', (err, data) => {
+      console.log(err, data.rows)
+      res.json({"message": data.rows});
+      pool.end()
+    })
 });
 
 // Require Sessions routes
