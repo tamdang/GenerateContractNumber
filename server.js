@@ -29,8 +29,12 @@ const pool = new Pool({
 // define a simple route
 app.get('/', function(req, res){
     pool.query('SELECT id, client, account_manager from contract', (err, data) => {
-      console.log(err, data.rows)
-      res.json({"message": data.rows});
+      if(err){
+        console.log(err)
+      }
+      else{
+        res.json({"message": data.rows})
+      }
       // pool.end()
     })
 });
