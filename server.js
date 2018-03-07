@@ -1,11 +1,11 @@
-var express = require('express');
-var bodyParser = require('body-parser');
+var express = require('express')
+var bodyParser = require('body-parser')
 
 // create express app
 var app = express();
 
 app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', '*')
   next()
 })
 
@@ -16,35 +16,29 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Configuring the database
-var dbconfig = require('./config/database.config.js');
+var dbConfig = require('./config/database.config.js');
+var mongoose = require('mongoose');
 
-console.log('database_config',dbconfig.url);
+mongoose.connect(dbConfig.url, {
+    
+})
 
-const { Pool, Client } = require('pg')
+mongoose.connection.on('error', function() {
+  console.log('Could not connect to the database. Exiting now...');
+  process.exit();
+})
 
-const pool = new Pool({
-  connectionString: dbconfig.url,
+mongoose.connection.once('open', function() {
+  console.log("Successfully connected to the database");
 })
 
 // define a simple route
 app.get('/', function(req, res){
-    pool.query('SELECT id, client, account_manager from contract', (err, data) => {
-      if(err){
-        console.log(err)
-      }
-      else{
-        res.json({"message": data.rows})
-      }
-      // pool.end()
-    })
+  res.json({"message": "Welcome to Contract Management System application."});
 });
 
-// Require Sessions routes
-// require('./app/routes/session.routes.js')(app);
-// require('./app/routes/receiver.routes.js')(app);
-// require('./app/routes/file.routes.js')(app);
-require('./app/routes/generator.routes.js')(app);
-
+require('./app/routes/contract.routes.js')(app)
+require('./app/routes/code.routes.js')(app)
 
 const PORT = process.env.PORT || 8080
 

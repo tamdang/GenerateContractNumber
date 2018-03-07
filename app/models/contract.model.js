@@ -6,7 +6,7 @@ var ContractSchema = mongoose.Schema({
   accountExecutiveId: String,
   client: String,
   brand: String,
-  amount: Number,
+  budget: Number,
   signDate: Date,
   start: Date,
   end: Date,

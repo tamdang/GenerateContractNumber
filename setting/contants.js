@@ -1,0 +1,1 @@
+module.exports.RECORD_LIMIT = 500
