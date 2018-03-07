@@ -23,7 +23,8 @@ mongoose.connect(dbConfig.url, {
     
 })
 
-mongoose.connection.on('error', function() {
+mongoose.connection.on('error', function(err) {
+  console.log(err)
   console.log('Could not connect to the database. Exiting now...');
   process.exit();
 })
@@ -39,12 +40,14 @@ app.get('/', function(req, res){
 
 require('./app/routes/contract.routes.js')(app)
 require('./app/routes/code.routes.js')(app)
+require('./app/routes/group.routes.js')(app)
+require('./app/routes/user.routes.js')(app)
 
 const PORT = process.env.PORT || 8080
 
 // listen for requests
 app.listen(PORT, function(){
-    console.log("Server is listening on port "+PORT);
+  console.log("Server is listening on port "+PORT);
 });
 
 function up(){
