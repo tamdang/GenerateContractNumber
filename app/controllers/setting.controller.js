@@ -5,7 +5,6 @@ const {
 
 exports.create = function(req, res){
   const {key, value} = req.body
-
   var setting = new Setting({key, value})
     setting.save(function(err, setting) {
     if(err) {
@@ -18,23 +17,13 @@ exports.create = function(req, res){
 
 exports.update = function(req, res){
   const {id} = req.params
-  Setting.findById(id, function(err, setting) {
+  const {key, value} = req.body
+  Setting.findByIdAndUpdate(id,{key,value},function(err,setting){
     if(err) {
-      res.status(500).send({message: "Could not find a setting with id " + id})
+      res.status(500).send({message: "Could not update a setting with id " + id})
       return
     }
-
-    Object.keys(req.body).forEach(k => {
-      setting[k] = req.body[k]
-    })
-
-    Setting.save(function(err, setting){
-      if(err) {
-        res.status(500).send({message: "Could not update setting with id " + id})
-        return
-      } 
-      res.send(setting)
-    })
+    res.send(setting)
   })
 }
 
@@ -68,5 +57,16 @@ exports.getAll = function(req, res) {
       return
     } 
     res.send(settings)
+  })
+}
+
+exports.getByKey = function(req, res){
+  const {key} = req.params
+  Setting.findOne({'key':key}).exec(function(err, setting){
+    if(err) {
+      res.status(500).send({message: "Could not retrieve setting"})
+      return
+    } 
+    res.send({'value':setting['value']})
   })
 }

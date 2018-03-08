@@ -42,6 +42,7 @@ require('./app/routes/contract.routes.js')(app)
 require('./app/routes/code.routes.js')(app)
 require('./app/routes/group.routes.js')(app)
 require('./app/routes/user.routes.js')(app)
+require('./app/routes/setting.routes.js')(app)
 
 const PORT = process.env.PORT || 8080
 
