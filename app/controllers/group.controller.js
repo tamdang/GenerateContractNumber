@@ -1,5 +1,7 @@
 var Group = require('../models/group.model.js')
 var GroupUser = require('../models/group_user.model')
+var User = require('../models/user.model')
+var mongoose = require('mongoose')
 const {
   RECORD_LIMIT
 } = require('../../setting/contants')
@@ -17,6 +19,28 @@ exports.create = function(req, res){
   })
 }
 
+exports.update = function(req, res){
+  const {id} = req.params
+  Group.findById(id, function(err, group) {
+    if(err) {
+      res.status(500).send({message: "Could not find a group with id " + id})
+      return
+    }
+
+    Object.keys(req.body).forEach(k => {
+      group[k] = req.body[k]
+    })
+
+    group.save(function(err, group){
+      if(err) {
+        res.status(500).send({message: "Could not update group with id " + id})
+        return
+      } 
+      res.send(group)
+    })
+  })
+}
+
 exports.addUser = function(req, res){
   const {userId} = req.body
   const {groupId} = req.params
@@ -31,23 +55,15 @@ exports.addUser = function(req, res){
   })
 }
 
-exports.removeUser = function(red, res){
-  const {groupId, userid} = req.params
-  GroupUser.find({groupid,userid}).exec(function(err, groupUser){
+exports.removeUser = function(req, res){
+  const {groupId, userId} = req.params
+  GroupUser.findOneAndRemove({groupId, userId}).exec(function(err,data){
     if(err){
       res.status(500).send({message: "Some error occured while getting the group user"})
       return
     }
-    GroupUser.remove({id: groupUser._id}, function(err, data){
-      if(err) {
-        res.status(500).send({message: "Could not remove user from group."});
-        return
-      } else {
-        res.send({message: "User was removed from group successfully!"})
-      }
-    })
+    res.send({message: "User was removed from group successfully!"})
   })
-
 }
 
 exports.delete = function(req, res){
@@ -62,7 +78,7 @@ exports.delete = function(req, res){
   })
 }
 
-exports.getById = function(red, res){
+exports.getById = function(req, res){
   const {id} = req.params
   Group.findById(id,function(err,group){
     if(err) {
@@ -80,5 +96,19 @@ exports.getAll = function(req, res) {
       return
     } 
     res.send(groups)
+  })
+}
+
+exports.getUsers = function(req, res){
+  const {groupId} = req.params
+  GroupUser.find({groupId}).limit(RECORD_LIMIT).exec(function(err,groupusers){
+    let userIds = groupusers.map(gu=>mongoose.Types.ObjectId(gu.userId))
+    User.find({ '_id':{$in:userIds}}).exec(function(err,users){
+      if(err) {
+        res.status(500).send({message: "Could not retrieve users"})
+        return
+      } 
+      res.send(users)
+    })
   })
 }

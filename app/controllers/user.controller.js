@@ -7,7 +7,7 @@ exports.create = function(req, res){
   const {fbId, firstName, lastName, middleName, role} = req.body
 
   var user = new User({fbId, firstName, lastName, middleName, role})
-    code.save(function(err, user) {
+    user.save(function(err, user) {
     if(err) {
         res.status(500).send({message: "Some error occurred while creating the code."})
         return
@@ -18,8 +18,10 @@ exports.create = function(req, res){
 
 exports.update = function(req, res){
   const {id} = req.params
+  console.log('update', id)
   User.findById(id, function(err, user) {
     if(err) {
+      console.log('update_err', err)
       res.status(500).send({message: "Could not find a user with id " + id})
       return
     }
@@ -28,7 +30,7 @@ exports.update = function(req, res){
       user[k] = req.body[k]
     })
 
-    User.save(function(err, user){
+    user.save(function(err, user){
       if(err) {
         res.status(500).send({message: "Could not update user with id " + id})
         return
@@ -50,8 +52,9 @@ exports.delete = function(req, res){
   })
 }
 
-exports.getById = function(red, res){
+exports.getById = function(req, res){
   const {id} = req.params
+  console.log('getById',id)
   User.findById(id,function(err,user){
     if(err) {
       res.status(500).send({message: "Could not retrieve user"})
