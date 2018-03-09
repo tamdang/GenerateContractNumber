@@ -3,6 +3,7 @@ var Code = require('../models/code.model')
 var Setting = require('../models/setting.model')
 var GroupUser = require('../models/group_user.model')
 var Group = require('../models/group.model')
+var crudUtil = require('./util.controller')
 const {
   RECORD_LIMIT
 } = require('../../setting/contants')
@@ -47,49 +48,11 @@ exports.create = function(req, res) {
   })
 }
 
-exports.getById = function(req, res){
-  const {id} = req.params
-  Contract.findById(id,function(err,data){
-    if(err) {
-      res.status(500).send({message: "Some error occurred while getting the contract id "+id});
-    } else {
-      res.send(data)
-    }
-  })
-}
+exports.getById = crudUtil.getById({Contract})
 
-exports.delete = function(req, res){
-  const {id} = req.params
-  Contract.remove({_id: id}, function(err, data) {
-    if(err) {
-      res.status(500).send({message: "Could not delete contract with id " + id});
-    } else {
-      res.send({message: "Contract was deleted successfully!"})
-    }
-  })
-}
+exports.delete = crudUtil.deleteById({Contract})
 
-exports.update = function(req, res){
-  const {id} = req.params
-  Contract.findById(id, function(err, contract) {
-    if(err) {
-      res.status(500).send({message: "Could not find a contract with id " + id})
-      return
-    }
-
-    Object.keys(req.body).forEach(k => {
-      contract[k] = req.body[k]
-    })
-
-    Contract.save(function(err, data){
-      if(err) {
-        res.status(500).send({message: "Could not update contract with id " + id})
-        return
-      }
-        res.send(data)
-    })
-  })
-}
+exports.update = crudUtil.update({Contract})
 
 exports.getByUserId = function(req, res) {
   const {userId} = req.params

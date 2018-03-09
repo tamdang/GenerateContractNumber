@@ -1,8 +1,8 @@
 var Code = require('../models/code.model.js');
-var utilCRUD = require('./util.controller')
+var crudUtil = require('./util.controller')
 
-exports.getAll = utilCRUD.getAll({Code})
-exports.update = utilCRUD.update({Code})
-exports.create = utilCRUD.create({Code})
-exports.delete = utilCRUD.deleteById({Code})
-exports.getById = utilCRUD.getById({Code})
+exports.create = crudUtil.create({Code})
+exports.getById = crudUtil.getById({Code})
+exports.getAll = crudUtil.getAll({Code})
+exports.update = crudUtil.update({Code})
+exports.delete = crudUtil.deleteById({Code})

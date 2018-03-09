@@ -2,16 +2,16 @@ var Group = require('../models/group.model.js')
 var GroupUser = require('../models/group_user.model')
 var User = require('../models/user.model')
 var mongoose = require('mongoose')
-var utilCRUD = require('./util.controller')
+var crudUtil = require('./util.controller')
 const {
   RECORD_LIMIT
 } = require('../../setting/contants')
 
-exports.create = utilCRUD.create({Group})
-exports.update = utilCRUD.update({Group})
-exports.delete = utilCRUD.deleteById({Group})
-exports.getAll = utilCRUD.getAll({Group})
-exports.getById = utilCRUD.getById({Group})
+exports.create = crudUtil.create({Group})
+exports.update = crudUtil.update({Group})
+exports.delete = crudUtil.deleteById({Group})
+exports.getAll = crudUtil.getAll({Group})
+exports.getById = crudUtil.getById({Group})
 
 exports.addUser = function(req, res){
   const {userId} = req.body
