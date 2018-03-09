@@ -4,4 +4,5 @@ module.exports = function(app) {
   app.put('/api/code/:id', code.update)
   app.delete('/api/code/:id', code.delete)
   app.get('/api/code',code.getAll)
+  app.get('/api/code/:id',code.getById)
 }
