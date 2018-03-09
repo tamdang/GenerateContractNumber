@@ -1,10 +1,11 @@
 var Setting = require('../models/setting.model.js')
+var utilCRUD = require('./util.controller')
 
-exports.create = require('./util.controller').create({Setting})
-exports.update = require('./util.controller').update({Setting})
-exports.deleteById = require('./util.controller').deleteById({Setting})
-exports.getById = require('./util.controller').getById({Setting})
-exports.getAll = require('./util.controller').getAll({Setting})
+exports.create = utilCRUD.create({Setting})
+exports.update = utilCRUD.update({Setting})
+exports.deleteById = utilCRUD.deleteById({Setting})
+exports.getById = utilCRUD.getById({Setting})
+exports.getAll = utilCRUD.getAll({Setting})
 
 exports.getByKey = function(req, res){
   const {key} = req.params
