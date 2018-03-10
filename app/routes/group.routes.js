@@ -8,4 +8,5 @@ module.exports = function(app) {
   app.get('/api/group/:id',group.getById)
   app.get('/api/group',group.getAll)
   app.get('/api/group/getuser/:groupId',group.getUsers)
+  app.get('/api/test/groupfullinfo/:id',group.getGroupFullInfo)
 }

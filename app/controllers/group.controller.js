@@ -2,7 +2,8 @@ var Group = require('../models/group.model.js')
 var GroupUser = require('../models/group_user.model')
 var User = require('../models/user.model')
 var mongoose = require('mongoose')
-var crudUtil = require('./util.controller')
+var crudUtil = require('./util.crud')
+const {getGroupFullInfo} = require('./util.groupuser')
 const {
   RECORD_LIMIT
 } = require('../../setting/contants')
@@ -50,4 +51,14 @@ exports.getUsers = function(req, res){
       res.send(users)
     })
   })
+}
+
+exports.getGroupFullInfo = (req, res)=>{
+  const {id} = req.params
+  console.log('getGroupFullInfo',id)
+  getGroupFullInfo(id)
+    .then(groupFullInfo=>{
+      res.send(groupFullInfo)
+    })
+    .catch(err=>res.status(500).send({message: "Some error occur while getting the data"}))
 }
