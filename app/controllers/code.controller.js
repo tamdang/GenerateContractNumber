@@ -1,5 +1,5 @@
-var Code = require('../models/code.model.js');
-var crudUtil = require('./util.crud')
+var Code = require('../models/code.model.js')
+var crudUtil = require('../utils/crud.utils')
 
 exports.create = crudUtil.create({Code})
 exports.getById = crudUtil.getById({Code})

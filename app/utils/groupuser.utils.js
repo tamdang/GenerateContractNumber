@@ -27,12 +27,19 @@ exports.getGroupFullInfo = groupId => (
     .then(users=>{
       Group.findById(groupId,(err,group)=>{
         User.findById(group.amUserId,(err,accountManager)=>{
-          const {firstName, middleName, lastName} = accountManager
+          const {_id, firstName, middleName, lastName} = accountManager
           let ret = {
             'groupName': group.name,
-            'accountManager': getFullName(firstName, lastName, middleName),
-            'colleagues': users.map(({firstName, lastName, middleName})=>
-                          getFullName(firstName, lastName, middleName))
+            'accountManager': {
+              'fullName': getFullName(firstName, lastName, middleName),
+              'id': _id
+            },
+            'colleagues': users.map(({_id, firstName, lastName, middleName})=>(
+              {
+                'fullName': getFullName(firstName, lastName, middleName),
+                'id': _id
+              }
+            ))
           }
           resolve(ret)
         })

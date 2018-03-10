@@ -3,7 +3,7 @@ var Code = require('../models/code.model')
 var Setting = require('../models/setting.model')
 var GroupUser = require('../models/group_user.model')
 var Group = require('../models/group.model')
-var crudUtil = require('./util.crud')
+var crudUtil = require('../utils/crud.utils')
 const {
   RECORD_LIMIT
 } = require('../../setting/contants')

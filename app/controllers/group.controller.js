@@ -2,8 +2,8 @@ var Group = require('../models/group.model.js')
 var GroupUser = require('../models/group_user.model')
 var User = require('../models/user.model')
 var mongoose = require('mongoose')
-var crudUtil = require('./util.crud')
-const {getGroupFullInfo} = require('./util.groupuser')
+var crudUtil = require('../utils/crud.utils')
+const {getGroupFullInfo} = require('../utils/groupuser.utils')
 const {
   RECORD_LIMIT
 } = require('../../setting/contants')

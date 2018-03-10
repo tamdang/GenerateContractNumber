@@ -1,6 +1,5 @@
 var User = require('../models/user.model.js')
-var crudUtil = require('./util.crud')
-
+var crudUtil = require('../utils/crud.utils')
 var GroupUser = require('../models/group_user.model')
 
 exports.create = crudUtil.create({User})

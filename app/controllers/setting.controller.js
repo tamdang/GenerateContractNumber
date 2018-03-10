@@ -1,5 +1,5 @@
 var Setting = require('../models/setting.model.js')
-var crudUtil = require('./util.crud')
+var crudUtil = require('../utils/crud.utils')
 
 exports.create = crudUtil.create({Setting})
 exports.update = crudUtil.update({Setting})
