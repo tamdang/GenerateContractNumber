@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var ContractSchema = mongoose.Schema({
-  contractNumber: Number,
+  contractNumber: String,
   accountManagerId: String,
   accountExecutiveId: String,
   client: String,
@@ -10,6 +10,7 @@ var ContractSchema = mongoose.Schema({
   signDate: Date,
   start: Date,
   end: Date,
+  description: String,
 });
 
 module.exports = mongoose.model('Contract', ContractSchema);

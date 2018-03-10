@@ -4,47 +4,39 @@ var Setting = require('../models/setting.model')
 var GroupUser = require('../models/group_user.model')
 var Group = require('../models/group.model')
 var crudUtil = require('../utils/crud.utils')
+var {generateNewContractNumber} = require('../utils/code.utils')
 const {
   RECORD_LIMIT
 } = require('../../setting/contants')
 
 exports.create = function(req, res) {
-  const {accountManagerId, accountExecutiveId, client, brand, budget, signDate, start, end} = req.body
+  const {accountManagerId, accountExecutiveId, client, 
+    brand, budget, signDate, start, end, description} = req.body
 
   // Get the threshold to determine whether the contract number is internal or external
-  Setting.find({key: 'threshold'}).exec(function(err, threshold){
-    if(err) {
+  Setting.findOne({key: 'threshold'}).exec(function(err, threshold){
+    if(err || !threshold) {
       res.status(500).send({message: "Could not retrieve the threshold"})
       return
     }
-    let isExternal = budget > threshold
-    // Find the code which can be internal or external and the default is true
-    // to get masterCode and its latestNumber. Then update the contractNumber
-    Code.findOne({isExternal: isExternal, isDefault: true}).exec(function(err, code){
-      if(err) {
-        res.status(500).send({message: "Could not retrieve the code"})
-        return
-      } 
-      // Save latestNumber in the code
-      code.latestNumber = latestNumber + 1
-      code.save(function(err,code){
-        if(err){
-          res.status(500).send({message: "Could not save the new code"})
-          return 
-        }
-        const {masterCode, latestNumber} = code
-        let contractNumber = masterCode + ' ' + latestNumber
-        // Create new contract, save it to database and then return it
-        var contract = new Contract({contractNumber, accountManagerId, accountExecutiveId, client, brand, budget, signDate, start, end})
-        contract.save(function(err, contract) {
-          if(err) {
+
+    let isExternal = budget > threshold.value
+
+    generateNewContractNumber(isExternal)
+      .then(contractNumber=>{
+        var contract = new Contract({contractNumber, accountManagerId, accountExecutiveId, 
+                                    client, brand, budget, signDate, start, end, description})
+        contract.save((err, contract)=>{
+          if(err || !contract) {
             res.status(500).send({message: "Some error occurred while creating the contract."})
             return
           } 
           res.send(contract)
         })
       })
-    })
+      .catch(err=>{
+        res.status(500).send({message: err})
+      })
   })
 }
 
@@ -53,6 +45,8 @@ exports.getById = crudUtil.getById({Contract})
 exports.delete = crudUtil.deleteById({Contract})
 
 exports.update = crudUtil.update({Contract})
+
+exports.getAll = crudUtil.getAll({Contract})
 
 exports.getByUserId = function(req, res) {
   const {userId} = req.params
