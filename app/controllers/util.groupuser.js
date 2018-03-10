@@ -2,7 +2,7 @@ var GroupUser = require('../models/group_user.model')
 var Group = require('../models/group.model')
 var User = require('../models/user.model')
 var mongoose = require('mongoose')
-const getFullName = require('../../setting/setting')
+const {getFullName} = require('../../setting/setting')
 const {
   RECORD_LIMIT
 } = require('../../setting/contants')
@@ -24,38 +24,17 @@ exports.getUsersByGroupId = getUsersByGroupId
 exports.getGroupFullInfo = groupId => (
   new Promise((resolve, reject)=>{
     getUsersByGroupId(groupId)
-      .then(users=>{
-        Group.findById(groupId,(err,group)=>{
-          console.log('group',group)
-          if(err){
-            reject(err)
-            return
-          } 
-          let ret = {
-            'groupName': group.name,
-            'accountManager': getFullName(firstName, lastName, middleName),
-            'colleagues': users.map(({firstName, lastName, middleName})=>
-                getFullName(firstName,lastName,middleName))
-          }
-          User.findOne({'_id':group.amUserId}, (err,accountManager)=>{
-            console.log('accountManager', accountManager)
-            if(err) reject(err)
-            if(accountManager){
-              const {firstName,lastName, middleName} = accountManager
-              let ret = {
-                'groupName': group.name,
-                'accountManager': getFullName(firstName, lastName, middleName),
-                'colleagues': users.map(({firstName, lastName, middleName})=>
-                    getFullName(firstName,lastName,middleName))
-              }
-              resolve(ret)
-              return
-            }
-            reject('something when wrong')
-            return
-          })
-        })
+    .then(users=>{
+      Group.findById(groupId,(err,group)=>{
+        console.log(group)
+        let ret = {
+          'groupName': group.name,
+          'colleagues': users.map(({firstName, lastName, middleName})=>
+                        getFullName(firstName, lastName, middleName))
+        }
+        resolve(ret)
       })
-      .catch(err=>reject(err))
+    })
+    .catch(err=>reject(err))
   })
 )

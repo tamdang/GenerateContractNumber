@@ -55,7 +55,6 @@ exports.getUsers = function(req, res){
 
 exports.getGroupFullInfo = (req, res)=>{
   const {id} = req.params
-  console.log('getGroupFullInfo',id)
   getGroupFullInfo(id)
     .then(groupFullInfo=>{
       res.send(groupFullInfo)
