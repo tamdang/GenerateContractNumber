@@ -1,1 +1,0 @@
-exports.getFullName = (firstName, lastName, middleName) => (lastName + ' ' + middleName + ' ' + firstName)

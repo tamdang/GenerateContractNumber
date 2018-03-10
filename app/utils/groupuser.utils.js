@@ -2,7 +2,7 @@ var GroupUser = require('../models/group_user.model')
 var Group = require('../models/group.model')
 var User = require('../models/user.model')
 var mongoose = require('mongoose')
-const {getFullName} = require('../../setting/setting')
+const {getIdAndFullName} = require('./misc.utils')
 const {
   RECORD_LIMIT
 } = require('../../setting/contants')
@@ -27,19 +27,10 @@ exports.getGroupFullInfo = groupId => (
     .then(users=>{
       Group.findById(groupId,(err,group)=>{
         User.findById(group.amUserId,(err,accountManager)=>{
-          const {_id, firstName, middleName, lastName} = accountManager
           let ret = {
             'groupName': group.name,
-            'accountManager': {
-              'fullName': getFullName(firstName, lastName, middleName),
-              'id': _id
-            },
-            'colleagues': users.map(({_id, firstName, lastName, middleName})=>(
-              {
-                'fullName': getFullName(firstName, lastName, middleName),
-                'id': _id
-              }
-            ))
+            'accountManager': getIdAndFullName(accountManager),
+            'members': users.map(user=>getIdAndFullName(user))
           }
           resolve(ret)
         })
