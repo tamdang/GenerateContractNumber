@@ -3,10 +3,15 @@ var Code = require('../models/code.model')
 var Setting = require('../models/setting.model')
 var GroupUser = require('../models/group_user.model')
 var Group = require('../models/group.model')
+var User = require('../models/user.model')
 var crudUtil = require('../utils/crud.utils')
 var {generateNewContractNumber} = require('../utils/code.utils')
+var {getGroupByUserId} = require('../utils/groupuser.utils')
 const {
-  RECORD_LIMIT
+  RECORD_LIMIT,
+  SUPER_USER,
+  ACCOUNT_MANAGER,
+  ACCOUNT_EXECUTIVE,
 } = require('../../setting/contants')
 
 exports.create = function(req, res) {
@@ -50,45 +55,28 @@ exports.getAll = crudUtil.getAll({Contract})
 
 exports.getByUserId = function(req, res) {
   const {userId} = req.params
-  User.findById(userId,function(err,user){
-    if(err){
-      res.status(500).send({message: "Could not get user with id " + userId})
-      return
-    }
-    // If user is super admin
-    if(user.role==='sa'){
-      Contract.find().limit(RECORD_LIMIT).exec(function(err,contracts){
+  getGroupByUserId(userId)
+    .then(groupAndRole=>{
+      const {group, role} = groupAndRole
+      let querryCondition = null
+      if(role===SUPER_USER){
+        querryCondition = {}
+      }
+      else if(role===ACCOUNT_MANAGER){
+        querryCondition = {"accountManagerId":userId}
+      }
+      else{
+        querryCondition = {"accountExecutiveId":userId}
+      }
+      Contract.find(querryCondition).limit(RECORD_LIMIT).exec(function(err,contracts){
         if(err){
-          res.status(500).send({message: "Could not get contract of user " + userId})
+          res.status(500).send({message: "Could not get any contract."})
           return
         }
         res.send(contracts)
       })
-    }
-    else{
-      // Get group id that user belongs to
-      GroupUser.findOne({userId:userId}).exec(function(err,groupUser){
-        if(err){
-          res.status(500).send({message: "Could not group of user with id " + userId})
-          return
-        } 
-        // Get group of the group that user belongs to
-        Group.getById(groupUser.groupId,function(err,group){
-          if(err){
-            res.status(500).send({message: "Could not group of user with id " + userId})
-            return
-          }
-          // If user is the account manager of the group (s)he belongs to
-          let amOrAE = group.amUserId===userId ? 'accountManagerId' : 'accountExecutiveId'
-          Contract.find({[amOrAE]:userId}).limit(RECORD_LIMIT).exec(function(err,contracts){
-            if(err){
-              res.status(500).send({message: "Could not find contract of user with id " + userId})
-              return
-            }
-            res.send(contracts)
-          })
-        })
-      })
-    }
-  })
+    })
+    .catch(err=>{
+      res.status(500).send({message: "Could not get any contract."})
+    })
 }
