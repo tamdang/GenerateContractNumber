@@ -5,5 +5,5 @@ module.exports = function(app) {
   app.delete('/api/user/:id', user.delete)
   app.get('/api/user/:id',user.getById)
   app.get('/api/user',user.getAll)
-  app.get('/api/user/full/:id',user.getFullInfo)
+  app.get('/api/user/infotocreatecontract/:id',user.getInfoToCreateContractByUserId)
 }
