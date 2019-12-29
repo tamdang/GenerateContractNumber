@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Maggie</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <style>
+            @font-face {
+                font-family: "4990810_VN";
+                src: url("fonts/4990810_VN.otf") format("opentype");
+            }
+            @font-face {
+                font-family: "MyriadPro-Regular";
+                src: url("fonts/MyriadPro-Regular.otf") format("opentype");
+            }
+            @font-face {
+                font-family: "PatrickHand-Regular";
+                src: url("fonts/PatrickHand-Regular.ttf") format("truetype");
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loaderContainer"><div class='loader'></div></div>
+        <div id="welcome" class="wrapper">
+            <form class="userInfo">
+                <div class="infoTitle">
+                    <span class="title">NHẬP THÔNG TIN</span><br>
+                    <span class="subtitle">Để MAGGI Team bốc quẻ cho bạn nhé</span>
+                </div>
+                <div class="row row-margin">
+                  <label for="fullName" class="col-sm-3 col-form-label bodyText">Họ tên bạn là gì</label>
+                  <input type="text" class="form-control col-sm-4 roundborder" id="fullName" aria-describedby="emailHelp" placeholder="Họ và tên">
+                  <label for="birthDate" class="col-sm2 col-form-label bodyText">Ngày sinh</label>
+                  <input type="date" class="form-control col-sm-3 roundborder" id="birthDate">
+                </div>
+                <div class="row row-margin">
+                    <span class="bullet"></span>
+                    <span class="bodyText">Bạn có đổi crush lấy bao lì xì 1 tỷ không?</span>
+                    <label id="crushYes" class="crush bodyText">Có</label>
+                    <label id="crushNo" class="crush bodyText">Không</label>
+                </div> 
+                <div class="row">
+                    <span class="bullet"></span>
+                    <span class="bodyText">Ngày Tết, bạn chọn nấu ăn hay rửa chén?</span>
+                    <label id="workCook" class="work bodyText">Nấu ăn</label>
+                    <label id="workWash" class="work bodyText">Rửa chén</label>
+                </div>
+                <div class="row">
+                    <span class="bullet"></span>
+                    <span class="bodyText">Bạn thích những món ăn ngày Tết truyền thống hay những món ăn Tết kiểu mới sáng tạo?</span>
+                </div>
+                <div class="row">
+                    <label class="col-sm-2"></label>
+                    <label class="col-sm-4 radio-inline bodyText"><input id="traditionalFood" type="radio" name="optradio" checked>Món ăn ngày Tết truyền thống</label>
+                    <label class="col-sm-4 radio-inline bodyText"><input id="creativeFood" type="radio" name="optradio">Món ăn Tết kiểu sáng tạo</label>
+                </div>
+                <div class="d-flex justify-content-center">  
+                    <img src="img/btnSubmit.png" id="submit"/>  
+                </div>
+                <div class="text-center bodyText">
+                    <span>Để xem vận mệnh của bạn</span>
+                </div>
+              </form>
+        </div>
+        <div id="result" class="wrapper">
+            <img id="bgResult" src="img/rbachduong.png">
+            <div id='resultTitle' class="wrapper text-center">
+                <img id="cungIcon" src="img/ibachduong.png"/>
+                <span class="congrat"></span></img>
+            </div>
+        </div>
+    <script type="text/javascript" src="index.bundle.js"></script></body>
+</html>

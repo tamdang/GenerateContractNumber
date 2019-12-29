@@ -1,8 +1,11 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 
+
 // create express app
 var app = express();
+
+app.use(express.static('public'))
 
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -35,9 +38,9 @@ mongoose.connection.once('open', function() {
 })
 
 // define a simple route
-app.get('/', function(req, res){
-  res.json({"message": "Welcome to Contract Management System application."});
-});
+// app.get('/', function(req, res){
+//   res.json({"message": "Welcome to Contract Management System application."});
+// });
 
 require('./app/routes/contract.routes.js')(app)
 require('./app/routes/code.routes.js')(app)
